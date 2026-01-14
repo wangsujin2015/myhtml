@@ -2,7 +2,7 @@
   <div class="countdown-container">
     <el-card class="countdown-card" shadow="hover">
       <template #header>
-        <h1 class="title">距离目标日期</h1>
+        <h1 class="title">距离春节放假</h1>
       </template>
       
       <div class="date-picker-section">
