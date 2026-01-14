@@ -6,17 +6,42 @@
       </template>
       
       <div class="date-picker-section">
-        <el-date-picker
-          v-model="targetDate"
-          type="date"
-          placeholder="选择目标日期"
-          format="YYYY-MM-DD"
-          value-format="YYYY-MM-DD"
-          @change="handleDateChange"
-          size="large"
-          class="date-picker"
-        />
+        <div class="date-input-wrapper">
+          <el-input
+            :model-value="targetDate"
+            placeholder="选择目标日期"
+            readonly
+            size="large"
+            class="date-input"
+            @click="showCustomCalendar = true"
+          >
+            <template #prefix>
+              <el-icon><Calendar /></el-icon>
+            </template>
+          </el-input>
+          <el-button 
+            type="primary" 
+            size="large"
+            @click="showCustomCalendar = true"
+          >
+            选择日期
+          </el-button>
+        </div>
+        
+        <div v-if="selectedFestival" class="festival-info">
+          <el-tag type="success" size="large">
+            <span style="margin-right: 5px;">🎉</span>
+            {{ selectedFestival }}
+          </el-tag>
+        </div>
       </div>
+
+      <!-- 自定义日历弹窗 -->
+      <CustomCalendar
+        v-model="showCustomCalendar"
+        :selected-date="targetDate"
+        @confirm="handleCalendarConfirm"
+      />
 
       <div class="countdown-grid">
         <div class="time-box">
@@ -48,11 +73,23 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { ElCard, ElDatePicker, ElText } from 'element-plus'
+import { ElCard, ElInput, ElButton, ElText, ElTag, ElIcon } from 'element-plus'
+import { Calendar } from '@element-plus/icons-vue'
+import { getFestival, getAllFestivals, getDateType } from '../utils/festivals.js'
+import CustomCalendar from './CustomCalendar.vue'
 
 const targetDate = ref('')
 const timeLeft = ref({ days: 0, hours: 0, minutes: 0, seconds: 0 })
 let timer = null
+const festivals = ref({})
+const showCustomCalendar = ref(false)
+
+const selectedFestival = computed(() => {
+  if (!targetDate.value) return null
+  return getFestival(targetDate.value)
+})
+
+
 
 const formattedTargetDate = computed(() => {
   if (!targetDate.value) return ''
@@ -88,8 +125,21 @@ const handleDateChange = () => {
   if (targetDate.value) {
     localStorage.setItem('targetDate', targetDate.value)
     calculateTimeLeft()
+    // 更新节日数据（加载当前年份和前后各一年的数据）
+    const year = new Date(targetDate.value).getFullYear()
+    const currentYearFestivals = getAllFestivals(year)
+    const prevYearFestivals = getAllFestivals(year - 1)
+    const nextYearFestivals = getAllFestivals(year + 1)
+    festivals.value = { ...prevYearFestivals, ...currentYearFestivals, ...nextYearFestivals }
   }
 }
+
+// 处理自定义日历确认
+const handleCalendarConfirm = (date) => {
+  targetDate.value = date
+  handleDateChange()
+}
+
 
 onMounted(() => {
   const saved = localStorage.getItem('targetDate')
@@ -102,6 +152,14 @@ onMounted(() => {
     localStorage.setItem('targetDate', targetDate.value)
   }
   
+  // 初始化节日数据（加载当前年份和前后各一年的数据，以便切换月份时也能显示）
+  const year = new Date(targetDate.value).getFullYear()
+  const currentYearFestivals = getAllFestivals(year)
+  const prevYearFestivals = getAllFestivals(year - 1)
+  const nextYearFestivals = getAllFestivals(year + 1)
+  festivals.value = { ...prevYearFestivals, ...currentYearFestivals, ...nextYearFestivals }
+  
+  
   calculateTimeLeft()
   timer = setInterval(calculateTimeLeft, 1000)
 })
@@ -113,12 +171,14 @@ onUnmounted(() => {
 
 <style scoped>
 .countdown-container {
-  min-height: 100vh;
+  height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
+  position: relative;
+  overflow: visible;
 }
 
 .countdown-card {
@@ -146,12 +206,107 @@ onUnmounted(() => {
 
 .date-picker-section {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   margin: 30px 0;
+  width: 100%;
 }
 
-.date-picker {
+.date-input-wrapper {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.date-input {
   width: 300px;
+  cursor: pointer;
+}
+
+.date-input :deep(.el-input__inner) {
+  cursor: pointer;
+}
+
+.festival-info {
+  margin-top: 15px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 节日日期标记样式 - 使用更具体的选择器 */
+:deep(.el-date-table .festival-day) {
+  position: relative;
+}
+
+:deep(.el-date-table .festival-day .el-date-table__cell) {
+  color: #f56c6c !important;
+  font-weight: 600;
+  position: relative;
+}
+
+:deep(.el-date-table .festival-day .el-date-table__cell .el-date-table__cell-text) {
+  color: #f56c6c !important;
+  font-weight: 600;
+}
+
+:deep(.el-date-table .festival-day .el-date-table__cell::after) {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  background: #f56c6c;
+  border-radius: 50%;
+  z-index: 10;
+  display: block;
+}
+
+/* 当前选中日期如果是节日，也要显示标记 */
+:deep(.el-date-table__cell.current.festival-day) {
+  border-color: #f56c6c !important;
+}
+
+/* 确保节日标记在悬停时也可见 */
+:deep(.festival-day .el-date-table__cell:hover) {
+  color: #f56c6c !important;
+}
+
+/* 确保节日日期文字始终是红色 */
+:deep(.festival-day .el-date-table__cell-text) {
+  color: #f56c6c !important;
+}
+
+/* 全局样式 - 确保节日标记在所有情况下都显示 */
+:deep(.festival-day) {
+  position: relative;
+}
+
+:deep(.festival-day .el-date-table__cell) {
+  color: #f56c6c !important;
+}
+
+:deep(.festival-day .el-date-table__cell-text) {
+  color: #f56c6c !important;
+  font-weight: 600;
+}
+
+:deep(.festival-day .el-date-table__cell::after) {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  background: #f56c6c;
+  border-radius: 50%;
+  z-index: 10;
 }
 
 :deep(.el-input__wrapper) {
