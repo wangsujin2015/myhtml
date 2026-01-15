@@ -244,12 +244,72 @@ watch(() => props.selectedDate, (newVal) => {
 </script>
 
 <style scoped>
-.custom-calendar-dialog :deep(.el-dialog__body) {
-  padding: 15px 20px;
+/* 弹窗遮罩层 - 玻璃态效果 */
+.custom-calendar-dialog :deep(.el-overlay) {
+  background: rgba(2, 6, 23, 0.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* 弹窗主体 - 玻璃态卡片 */
+.custom-calendar-dialog :deep(.el-dialog) {
+  background: linear-gradient(140deg, rgba(15, 23, 42, 0.92), rgba(30, 41, 59, 0.78));
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 24px;
+  box-shadow: 0 16px 40px rgba(2, 6, 23, 0.7),
+              0 6px 16px rgba(2, 6, 23, 0.4),
+              inset 0 1px 0 rgba(148, 163, 184, 0.12);
+  overflow: hidden;
 }
 
 .custom-calendar-dialog :deep(.el-dialog__header) {
-  padding: 15px 20px 10px;
+  padding: 20px 24px 16px;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+  margin: 0;
+}
+
+.custom-calendar-dialog :deep(.el-dialog__title) {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #F8FAFC;
+  text-shadow: 0 0 12px rgba(59, 130, 246, 0.25);
+  line-height: 1.5;
+}
+
+.custom-calendar-dialog :deep(.el-dialog__headerbtn) {
+  top: 20px;
+  right: 20px;
+  width: 32px;
+  height: 32px;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.custom-calendar-dialog :deep(.el-dialog__headerbtn:hover) {
+  background: rgba(30, 41, 59, 0.9);
+  border-color: rgba(99, 102, 241, 0.6);
+  transform: scale(1.05);
+}
+
+.custom-calendar-dialog :deep(.el-dialog__close) {
+  color: #E2E8F0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.custom-calendar-dialog :deep(.el-dialog__body) {
+  padding: 20px 24px;
+  background: transparent;
 }
 
 .custom-calendar {
@@ -260,68 +320,117 @@ watch(() => props.selectedDate, (newVal) => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
-  padding: 0 5px;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 12px;
+  box-shadow: inset 0 1px 0 rgba(148, 163, 184, 0.12);
+}
+
+.calendar-header :deep(.el-button) {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  color: #E2E8F0;
+  width: 36px;
+  height: 36px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(2, 6, 23, 0.4);
+}
+
+.calendar-header :deep(.el-button:hover) {
+  background: rgba(30, 41, 59, 0.9);
+  border-color: rgba(96, 165, 250, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(2, 6, 23, 0.5);
+}
+
+.calendar-header :deep(.el-button:active) {
+  transform: translateY(0);
 }
 
 .month-year {
   display: flex;
   align-items: baseline;
-  gap: 6px;
-  font-size: 16px;
+  gap: 8px;
+  font-family: 'Poppins', sans-serif;
   font-weight: 600;
-  color: #333;
+  color: #E2E8F0;
+  text-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
 }
 
 .year {
-  font-size: 18px;
+  font-size: 16px;
+  font-weight: 500;
+  opacity: 0.8;
 }
 
 .month {
-  font-size: 20px;
+  font-size: 22px;
+  font-weight: 700;
 }
 
 .weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 3px;
-  margin-bottom: 8px;
+  gap: 4px;
+  margin-bottom: 12px;
+  padding: 0 4px;
 }
 
 .weekday {
+  font-family: 'Open Sans', sans-serif;
   text-align: center;
-  padding: 6px 4px;
+  padding: 10px 4px;
   font-weight: 600;
-  color: #666;
+  color: #94A3B8;
   font-size: 13px;
+  text-shadow: 0 0 8px rgba(15, 23, 42, 0.6);
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 6px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
 }
 
 .days-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
+  gap: 6px;
+  padding: 0 4px;
 }
 
 .day-cell {
   aspect-ratio: 1;
-  min-height: 50px;
-  border: 1px solid #e4e7ed;
-  border-radius: 6px;
-  padding: 3px;
+  min-height: 52px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 8px;
+  padding: 4px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background: #fff;
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 12px rgba(2, 6, 23, 0.45),
+              inset 0 1px 0 rgba(148, 163, 184, 0.12);
 }
 
 .day-cell:hover {
-  background: #f5f7fa;
-  border-color: #409eff;
-  transform: scale(1.05);
+  background: rgba(30, 41, 59, 0.75);
+  border-color: rgba(96, 165, 250, 0.7);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(2, 6, 23, 0.6),
+              0 0 0 2px rgba(59, 130, 246, 0.25),
+              inset 0 1px 0 rgba(148, 163, 184, 0.2);
   z-index: 1;
 }
 
@@ -331,18 +440,40 @@ watch(() => props.selectedDate, (newVal) => {
 }
 
 .day-cell.other-month {
-  opacity: 0.3;
+  opacity: 0.35;
+  background: rgba(15, 23, 42, 0.2);
 }
 
 .day-cell.today {
-  border-color: #409eff;
+  border-color: #60A5FA;
   border-width: 2px;
+  background: rgba(59, 130, 246, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3),
+              inset 0 1px 0 rgba(148, 163, 184, 0.2);
+}
+
+.day-cell.today .day-number {
+  color: #93C5FD;
+  font-weight: 700;
 }
 
 .day-cell.selected {
-  background: #409eff;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.85), rgba(139, 92, 246, 0.85));
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
   color: #fff;
-  border-color: #409eff;
+  border-color: rgba(139, 92, 246, 0.9);
+  box-shadow: 0 6px 18px rgba(59, 130, 246, 0.55),
+              0 0 0 2px rgba(139, 92, 246, 0.35),
+              inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+.day-cell.selected .day-number {
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .day-cell.selected .day-number {
@@ -351,55 +482,69 @@ watch(() => props.selectedDate, (newVal) => {
 }
 
 .day-cell.selected .day-label span {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.35);
   color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .day-cell.selected .day-festival {
   color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 /* 节假日样式 */
 .day-cell.holiday {
-  background: #fef0f0;
-  border-color: #f56c6c;
+  background: rgba(127, 29, 29, 0.35);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-color: rgba(248, 113, 113, 0.45);
+  box-shadow: inset 0 1px 0 rgba(248, 113, 113, 0.2);
 }
 
 .day-cell.holiday .day-number {
-  color: #f56c6c;
-  font-weight: 600;
+  color: #FCA5A5;
+  font-weight: 700;
 }
 
 /* 调休上班样式 */
 .day-cell.work {
-  background: #ecf5ff;
-  border-color: #409eff;
+  background: rgba(30, 58, 138, 0.35);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-color: rgba(96, 165, 250, 0.45);
+  box-shadow: inset 0 1px 0 rgba(96, 165, 250, 0.2);
 }
 
 .day-cell.work .day-number {
-  color: #409eff;
-  font-weight: 600;
+  color: #BFDBFE;
+  font-weight: 700;
 }
 
 /* 周末样式 */
 .day-cell.weekend {
-  background: #fafafa;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .day-cell.weekend .day-number {
-  color: #909399;
+  color: #94A3B8;
 }
 
 /* 工作日样式 */
 .day-cell.normal {
-  background: #fff;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .day-number {
+  font-family: 'Open Sans', sans-serif;
   font-size: 14px;
-  font-weight: 500;
-  color: #303133;
+  font-weight: 600;
+  color: #E2E8F0;
   margin-bottom: 1px;
+  text-shadow: 0 0 8px rgba(15, 23, 42, 0.6);
 }
 
 .day-label {
@@ -416,74 +561,111 @@ watch(() => props.selectedDate, (newVal) => {
 }
 
 .holiday-label {
-  background: #f56c6c;
+  background: rgba(220, 38, 38, 0.9);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .work-label {
-  background: #409eff;
+  background: rgba(37, 99, 235, 0.9);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .weekend-label {
-  background: #909399;
+  background: rgba(100, 116, 139, 0.9);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .day-festival {
+  font-family: 'Open Sans', sans-serif;
   font-size: 9px;
-  color: #f56c6c;
-  font-weight: 500;
+  color: #FCA5A5;
+  font-weight: 600;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
-  margin-top: 1px;
+  margin-top: 2px;
   line-height: 1.2;
+  text-shadow: 0 0 8px rgba(15, 23, 42, 0.6);
 }
 
 .legend {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid #e4e7ed;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 16px;
+  padding: 16px;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 12px;
+  box-shadow: inset 0 1px 0 rgba(148, 163, 184, 0.12);
 }
 
 .legend-item {
+  font-family: 'Open Sans', sans-serif;
   display: flex;
   align-items: center;
   gap: 4px;
   font-size: 11px;
-  color: #666;
+  color: #94A3B8;
+  font-weight: 500;
+  text-shadow: 0 0 8px rgba(15, 23, 42, 0.6);
 }
 
 .legend-color {
   width: 12px;
   height: 12px;
   border-radius: 3px;
-  border: 1px solid #e4e7ed;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
 
 .legend-color.holiday {
-  background: #fef0f0;
-  border-color: #f56c6c;
+  background: rgba(127, 29, 29, 0.6);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border-color: rgba(248, 113, 113, 0.5);
+  box-shadow: inset 0 1px 0 rgba(248, 113, 113, 0.15);
 }
 
 .legend-color.work {
-  background: #ecf5ff;
-  border-color: #409eff;
+  background: rgba(30, 58, 138, 0.6);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border-color: rgba(96, 165, 250, 0.5);
+  box-shadow: inset 0 1px 0 rgba(96, 165, 250, 0.15);
 }
 
 .legend-color.weekend {
-  background: #fafafa;
-  border-color: #909399;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border-color: rgba(148, 163, 184, 0.25);
+  box-shadow: inset 0 1px 0 rgba(148, 163, 184, 0.12);
 }
 
 .legend-color.normal {
-  background: #fff;
-  border-color: #e4e7ed;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border-color: rgba(148, 163, 184, 0.22);
+  box-shadow: inset 0 1px 0 rgba(148, 163, 184, 0.12);
 }
 </style>

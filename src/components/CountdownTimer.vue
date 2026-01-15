@@ -172,13 +172,14 @@ onUnmounted(() => {
 <style scoped>
 .countdown-container {
   height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
   position: relative;
   overflow: visible;
+  z-index: 1;
 }
 
 .countdown-card {
@@ -186,22 +187,39 @@ onUnmounted(() => {
   width: 100%;
   border-radius: 24px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, rgba(17, 24, 39, 0.9), rgba(30, 41, 59, 0.72));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: 0 12px 32px rgba(2, 6, 23, 0.6),
+              inset 0 1px 0 rgba(148, 163, 184, 0.12);
+  transition: all 0.3s ease;
+}
+
+.countdown-card:hover {
+  background: linear-gradient(135deg, rgba(24, 32, 50, 0.95), rgba(39, 48, 72, 0.78));
+  box-shadow: 0 16px 40px rgba(2, 6, 23, 0.65),
+              inset 0 1px 0 rgba(148, 163, 184, 0.16);
 }
 
 :deep(.el-card__header) {
   padding: 30px;
   text-align: center;
-  border-bottom: none;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+  background: transparent;
+}
+
+:deep(.el-card__body) {
+  background: transparent;
 }
 
 .title {
+  font-family: 'Poppins', sans-serif;
   font-size: 2.5rem;
-  font-weight: 300;
-  color: #333;
+  font-weight: 600;
+  color: #F8FAFC;
   margin: 0;
+  text-shadow: 0 0 12px rgba(148, 163, 184, 0.35);
 }
 
 .date-picker-section {
@@ -220,6 +238,23 @@ onUnmounted(() => {
   margin-bottom: 15px;
 }
 
+.date-input-wrapper :deep(.el-button--primary) {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.95), rgba(124, 58, 237, 0.95));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  color: #F8FAFC;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+}
+
+.date-input-wrapper :deep(.el-button--primary:hover) {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 1), rgba(139, 92, 246, 1));
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.45);
+  transform: translateY(-1px);
+}
+
 .date-input {
   width: 300px;
   cursor: pointer;
@@ -227,6 +262,24 @@ onUnmounted(() => {
 
 .date-input :deep(.el-input__inner) {
   cursor: pointer;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  color: #E2E8F0;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.date-input :deep(.el-input__inner:hover) {
+  background: rgba(15, 23, 42, 0.8);
+  border-color: rgba(148, 163, 184, 0.35);
+}
+
+.date-input :deep(.el-input__inner:focus) {
+  background: rgba(15, 23, 42, 0.9);
+  border-color: #60A5FA;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.35);
 }
 
 .festival-info {
@@ -235,6 +288,16 @@ onUnmounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.festival-info :deep(.el-tag) {
+  background: rgba(16, 185, 129, 0.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #D1FAE5;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(5, 46, 22, 0.45);
 }
 
 /* 节日日期标记样式 - 使用更具体的选择器 */
@@ -311,16 +374,24 @@ onUnmounted(() => {
 
 :deep(.el-input__wrapper) {
   border-radius: 12px;
-  box-shadow: 0 0 0 1px #e0e0e0 inset;
-  transition: all 0.3s ease;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: inset 0 1px 0 rgba(148, 163, 184, 0.12);
+  transition: all 0.2s ease;
 }
 
 :deep(.el-input__wrapper:hover) {
-  box-shadow: 0 0 0 1px #667eea inset;
+  background: rgba(15, 23, 42, 0.8);
+  border-color: rgba(148, 163, 184, 0.35);
 }
 
 :deep(.el-input__wrapper.is-focus) {
-  box-shadow: 0 0 0 1px #667eea inset, 0 0 0 3px rgba(102, 126, 234, 0.1);
+  background: rgba(15, 23, 42, 0.9);
+  border-color: #60A5FA;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.35),
+              inset 0 1px 0 rgba(148, 163, 184, 0.15);
 }
 
 .countdown-grid {
@@ -331,38 +402,62 @@ onUnmounted(() => {
 }
 
 .time-box {
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(148, 163, 184, 0.2);
   padding: 30px 20px;
   border-radius: 16px;
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 16px rgba(2, 6, 23, 0.5),
+              inset 0 1px 0 rgba(148, 163, 184, 0.12);
+  cursor: pointer;
 }
 
 .time-box:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+  background: rgba(23, 31, 55, 0.7);
+  box-shadow: 0 10px 26px rgba(2, 6, 23, 0.6),
+              inset 0 1px 0 rgba(148, 163, 184, 0.18);
+  border-color: rgba(148, 163, 184, 0.35);
 }
 
 .number {
+  font-family: 'Poppins', sans-serif;
   font-size: 3.5rem;
   font-weight: 700;
-  color: #667eea;
+  color: #F8FAFC;
   line-height: 1;
   margin-bottom: 10px;
   transition: all 0.3s ease;
   display: block;
+  text-shadow: 0 0 12px rgba(59, 130, 246, 0.35);
 }
 
 .label {
+  font-family: 'Open Sans', sans-serif;
   font-size: 1.1rem;
-  color: #666;
-  font-weight: 500;
+  color: #94A3B8;
+  font-weight: 600;
+  text-shadow: 0 0 8px rgba(15, 23, 42, 0.6);
 }
 
 .target-date-info {
   text-align: center;
   margin-top: 20px;
+}
+
+.target-date-info :deep(.el-text) {
+  color: #CBD5F5;
+  font-weight: 500;
+  text-shadow: 0 0 8px rgba(15, 23, 42, 0.6);
+}
+
+@media (max-width: 1024px) {
+  .countdown-card {
+    max-width: 95%;
+  }
 }
 
 @media (max-width: 768px) {
@@ -381,14 +476,23 @@ onUnmounted(() => {
   
   .countdown-card {
     margin: 10px;
+    border-radius: 20px;
   }
   
   :deep(.el-card__header) {
     padding: 20px;
   }
+  
+  .time-box {
+    padding: 20px 15px;
+  }
 }
 
 @media (max-width: 480px) {
+  .countdown-container {
+    padding: 10px;
+  }
+  
   .countdown-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
@@ -396,6 +500,7 @@ onUnmounted(() => {
   
   .time-box {
     padding: 20px 15px;
+    min-height: 80px;
   }
   
   .number {
@@ -404,6 +509,33 @@ onUnmounted(() => {
   
   .label {
     font-size: 0.9rem;
+  }
+  
+  .title {
+    font-size: 1.75rem;
+  }
+  
+  .date-input-wrapper {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .date-input {
+    width: 100%;
+  }
+  
+  .date-input-wrapper :deep(.el-button) {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .countdown-container,
+  .time-box,
+  .number,
+  * {
+    animation: none !important;
+    transition: none !important;
   }
 }
 </style>
